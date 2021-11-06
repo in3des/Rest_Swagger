@@ -20,6 +20,20 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 //@SpringBootApplication
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -37,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
 
 
 
@@ -67,6 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
                 //страницы аутентификаци доступна всем
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/login").anonymous()
                 // защищенные URL
 //                .antMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "USER")

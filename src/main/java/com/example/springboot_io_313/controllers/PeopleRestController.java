@@ -2,20 +2,24 @@ package com.example.springboot_io_313.controllers;
 
 import com.example.springboot_io_313.entity.Person;
 import com.example.springboot_io_313.service.PeopleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 
+@Tag(name = "Person", description = "The Person API")
 @RestController
 @RequestMapping("/")
 public class PeopleRestController {
@@ -31,11 +35,30 @@ public class PeopleRestController {
 //    =================================== REST API
 
     @GetMapping("api/users")
+    @Operation(summary = "Gets all persons", tags = "Person")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Found the users",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Person.class)))
+                    })
+    })
     public List<Person> apiGetPeopleList() {
         return peopleService.index();
     }
 
+
     @GetMapping("api/findlogged")
+    @Operation(summary = "Gets all persons", tags = "Person", description = "jdfghsdjgfjdsfj")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешное получение списка приемок товара"),
+            @ApiResponse(responseCode = "404", description = "Данный контроллер не найден"),
+            @ApiResponse(responseCode = "403", description = "Операция запрещена"),
+            @ApiResponse(responseCode = "401", description = "Нет доступа к данной операции")}
+    )
     public Person apiFindLoggedUser(Authentication authentication) {
         return peopleService.findPersonByEmail(((Person) authentication.getPrincipal()).getEmail());
     }

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+
+    <title>Person</title>
+</head>
+<body>
+
+
+    <div class="container-fluid bg-dark">
+
+        <div class="pt-2">  </div>
+
+            <div class="row">
+                    <div class="col-lg-6">
+                            <p class="h4" style="color: white" valign="center" align="left">
+                                &nbsp;&nbsp;&nbsp;
+                                <span class="font-weight-bold" th:utext="${person.getEmail()} + ' '">
+                            </span>
+                                with roles:&nbsp;
+                                <span th:each="roleInList, iStat : ${person.getRoles()}"
+                                      th:text="!${iStat.last} ?
+                            (${#strings.substring(roleInList.role,5)} + ' ')
+                            : (${#strings.substring(roleInList.role,5)})">
+                            </span>
+                            </p>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                            <p class="h5" style="color: white" valign="center" align="right">
+                                <a style="color: darkgray" th:href="@{/logout}">Logout &nbsp;</a>
+                            </p>
+
+                    </div>
+
+            </div>
+
+        <div class="pt-2">  </div>
+
+    </div>
+
+
+<!--============================================================-->
+
+
+
+<!--============================================================-->
+<div class="container-fluid">
+<div class="row">
+    <div class="col-lg-2 px-0">
+        <div>
+            <br>
+            <ul class="list-group">
+
+                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}" type="button" onclick="location.href='/admin'" class="list-group-item" >Admin</li>
+                <li type="button" onclick="location.href='/user'" class="list-group-item active" >User</li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-10 bg-light">
+        <div class="container-fluid vh-100">
+
+
+
+            <div class="pt-2">  </div>
+            <p class="h1" valign="center" align="left"> User information-page </p>
+            <div class="pt-2">  </div>
+
+                    <div class="card">
+                        <div class="card-block">
+                            <table class="table table-hover table-flush">
+                                <thead>
+                                <tr style="background-color: #f2f2f2">
+                                    <th>
+                                        <p class="h4" valign="center" align="left"> About user </p>
+                                    </th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>
+
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                               <div class="col">
+
+                                                   <div id="user-table-list">
+
+<!-- ============ insert FETCH USER TABLE ============== -->
+
+                                                   </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </td>
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+
+
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+<!--============================================================-->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $('li').click(function() {
+            $('li.list-group-item.active').removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+</script>
+
+<script type="text/javascript" src="/js/user.js"></script>
+
+</body>
+</html>
